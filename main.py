@@ -6,6 +6,7 @@ from typing import List, Union, Dict
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import io, PyPDF2
+import pdfplumber
 
 from engine import RAGEngine
 from schema import Source, RAGResponse, QueryRequest
@@ -35,11 +36,11 @@ async def process_query(request: QueryRequest):
             return {"results": results}
         
         answer = rag_engine.run(request.query, request.top_k) 
-        answer_with_citations = rag_engine.run_with_citations(request.query, request.top_k) 
+        answer_with_citations = rag_engine.run_with_citations(request.query, request.top_k, request.filter_filename) 
 
 
 
-        return {"query": request.query, "answer": answer, "answer_with_sources":answer_with_citations}
+        return answer_with_citations
     
     
     except Exception as e:
@@ -58,8 +59,9 @@ async def ingest_file(file: UploadFile = File(...)):
 
         if file.filename.endswith('.pdf'):
             # extract pdf text
-            pdf_reader = PyPDF2.PdfReader(io.BytesIO(content))
-            text = "".join([page.extract_text() for page in pdf_reader.pages])
+            # pdf_reader = PyPDF2.PdfReader(io.BytesIO(content))
+            with pdfplumber.open(io.BytesIO(content)) as pdf_reader:
+                text = "".join([page.extract_text() for page in pdf_reader.pages])
         else:
             text = content.decode('utf-16')
 

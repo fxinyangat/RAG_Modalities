@@ -32,12 +32,16 @@ class RAGEngine():
     
         )
         return response.choices[0].message.content
-    def run_with_citations(self, query: str, top_k:int):
+    def run_with_citations(self, query: str, top_k:int, filter_filename: str =None):
         # Retrieva (Inlcude metadats)
+        metadata_filter =None
+        if filter_filename:
+            metadata_filter = {"source": filter_filename}
 
         results = self.collection.query(
             query_texts=[query],
             n_results=top_k,
+            where=metadata_filter,
             include=["documents", "metadatas", "distances"]
         )
 
@@ -52,8 +56,7 @@ class RAGEngine():
 
         # Clean list of sources
         sources = [
-            Source(filename=m['source'], content_snippet=d[:100] + '...')
-            for d, m in zip(documents, metadatas)
+            Source(filename=m['source'], content_snippet=d[:100] + '...') for d, m in zip(documents, metadatas)
         ]
 
         #Generation
