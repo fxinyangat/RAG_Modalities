@@ -1,0 +1,4 @@
+.env*
+__pycache__
+archived/my_vector_db/
+dev_vector_db/
