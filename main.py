@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import io, PyPDF2
 import pdfplumber
 
+# modules
 from engine import RAGEngine
 from schema import Source, RAGResponse, QueryRequest
 
@@ -29,7 +30,7 @@ async def process_query(request: QueryRequest):
 
     try:
         if isinstance(request.query, list):
-            # for simplicity lets loop , but best case is batch process
+            # for simplicity using loop , but best case is batch process
 
             results = [ rag_engine.run(q, request.top_k) for q in request.query] # or use .run_with_citations()
 
@@ -39,7 +40,7 @@ async def process_query(request: QueryRequest):
         answer_with_citations = rag_engine.run_with_citations(request.query, request.top_k, request.filter_filename) 
 
 
-
+        print(f"Answer with citations: {answer_with_citations}")
         return answer_with_citations
     
     

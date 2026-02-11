@@ -10,4 +10,4 @@ uvicorn @ file:///Users/ec2-user/croot/uvicorn-split_1768226431940/work
 uvloop @ file:///opt/miniconda3/conda-bld/uvloop_1762175502795/work
 chromadb==1.4.1
 PyPDF2 @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_e9jdhxarzu/croot/pypdf2_1733841481306/work
-
+flashrank-0.2.10
