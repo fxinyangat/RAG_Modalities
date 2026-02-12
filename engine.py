@@ -44,7 +44,7 @@ class RAGEngine():
 
         results = self.collection.query(
             query_texts=[query],
-            n_results=5, # retreive more than you need then rerank
+            n_results=top_k+5, # retreive more than you need then rerank
             where=metadata_filter,
             include=["documents", "metadatas", "distances"]
         )
@@ -54,7 +54,7 @@ class RAGEngine():
         documents = results['documents'][0]
         metadatas = results['metadatas'][0]
 
-        print(f"documents: {documents} \n citations:{metadatas}")
+        # print(f"documents: {documents} \n citations:{metadatas}")
 
         # 3. Prepare for Re-ranking
         passages = []
@@ -65,11 +65,23 @@ class RAGEngine():
         rerank_request = RerankRequest(query=query, passages=passages)
         reranked_results = self.ranker.rerank(rerank_request)
 
+        # Filter by threshhold (use score)
+        THRESHOLD = 0.1
+        reliable_passages = [p for p in reranked_results if p['score'] >= THRESHOLD]
+
+        print(f"Top K Reliable Passages\n: {reliable_passages[:top_k] if len(reliable_passages) > 0 else 'No Docs'}")
+
+        if not reliable_passages:
+            return RAGResponse(
+                answer="I'm sorry, I couldn't find any reliable information in the Knowledge Base at this time",
+                sources=[]
+            )
+
         #select top-k from reranked - reranker retruns in order of relevance
 
-        top_passages = reranked_results[:top_k]
+        top_passages = reliable_passages[:top_k]
 
-        print(f"Top K Renked Passages\n: {top_passages}")
+        
 
 
         #format for LLM
@@ -128,4 +140,4 @@ class RAGEngine():
             "message": "Chunks saved in vector db",
             "documents_save": len(chunks)
                  }
-# RAGEngine().run_with_citations("what company policy say about vacation", 3)
+# RAGEngine().run_with_citations("where did they burry Jesus Chris in AI age", 3)

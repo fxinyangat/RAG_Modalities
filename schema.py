@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Union, Dict, Optional
 
+
 # The request schema
 class QueryRequest(BaseModel):
     query: Union[str, list[str]]
@@ -13,8 +14,13 @@ class Source(BaseModel):
     filename: str
     content_snippet: str #a small preview of source text 
 
-#
+# Response
 class  RAGResponse(BaseModel):
     answer: str
     sources: List[Source]
+
+
+
+
+
 
