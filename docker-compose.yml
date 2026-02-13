@@ -1,0 +1,12 @@
+services:
+  rag-app:
+    build: .
+    image: my-rag-api:latest
+    container_name: rag_service
+    ports:
+      - "8686:8686"
+    env_file:
+      - .env
+    volumes:
+      - ./dev_vector_db:/app/dev_vector_db
+    restart: always

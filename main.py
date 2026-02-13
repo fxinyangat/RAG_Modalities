@@ -64,7 +64,37 @@ async def ingest_file(file: UploadFile = File(...)):
             with pdfplumber.open(io.BytesIO(content)) as pdf_reader:
                 text = "".join([page.extract_text() for page in pdf_reader.pages])
         else:
-            text = content.decode('utf-16')
+            ENCODINGS = [
+                    'utf-8',          
+                    'utf-16',        
+                    'latin-1',         
+                    'cp1252',          
+                    'utf-8-sig',     
+                    'ascii',           
+                ]
+
+            for enc in ENCODINGS:
+                
+                text = content.decode(enc, errors='replace')
+        
+        # chunk and save with engine
+        num_chunkks = rag_engine.ingest_new_document(text, file.filename)
+
+        print("Ingestion successfull")
+
+        return {"filename": file.filename, "status": "success", "chunks_added": num_chunkks}
+    
+    
+    # If none work, raise your exception
+    except Exception as e:
+        print(f"Error Ingesting: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Could not decode file."
+        )
+
+            
+
 
     
         # chunk and save with engine
@@ -78,9 +108,6 @@ async def ingest_file(file: UploadFile = File(...)):
         print(f"Error Ingesting:{e}")
         raise HTTPException(status_code=500, detail=f"File Ingestion failed: {e}")
 
-
-            
-    
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8686)

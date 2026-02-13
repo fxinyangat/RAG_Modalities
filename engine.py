@@ -13,7 +13,7 @@ class RAGEngine():
         self.client = OpenAI()
         self.db = chromadb.PersistentClient(path="./dev_vector_db")
         self.collection = self.db.get_or_create_collection("book_project")
-        self.ranker = Ranker() #init lightweight ranker
+        self.ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", max_length=1024) #init lightweight ranker
 
     def run(self, query: str, top_k: int):
         # Retrieval assuming we use chromas default embedding function
@@ -66,7 +66,7 @@ class RAGEngine():
         reranked_results = self.ranker.rerank(rerank_request)
 
         # Filter by threshhold (use score)
-        THRESHOLD = 0.1
+        THRESHOLD = 0
         reliable_passages = [p for p in reranked_results if p['score'] >= THRESHOLD]
 
         print(f"Top K Reliable Passages\n: {reliable_passages[:top_k] if len(reliable_passages) > 0 else 'No Docs'}")
@@ -140,4 +140,4 @@ class RAGEngine():
             "message": "Chunks saved in vector db",
             "documents_save": len(chunks)
                  }
-# RAGEngine().run_with_citations("where did they burry Jesus Chris in AI age", 3)
+# RAGEngine().run_with_citations("whats the documet about", 3)
