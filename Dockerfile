@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
+#install dependancies into spacif folder
 RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
 
 #stage 2 (dinning)
