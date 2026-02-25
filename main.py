@@ -25,6 +25,10 @@ rag_engine = RAGEngine()
 def read_root():
     return {"status": "RAG API is live"}
 
+@app.get("/health")
+def health_check():
+    return {"status":"healthy"}
+
 @app.post("/query", response_model=RAGResponse)
 async def process_query(request: QueryRequest):
 
