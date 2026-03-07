@@ -13,7 +13,7 @@ class RAGEngine():
         self.client = OpenAI()
         self.db = chromadb.PersistentClient(path="./dev_vector_db")
         self.collection = self.db.get_or_create_collection("book_project")
-        self.ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", max_length=1024) #init lightweight ranker
+        self.ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", max_length=1024, cache_dir="/temp") #init lightweight ranker
 
     def run(self, query: str, top_k: int):
         # Retrieval assuming we use chromas default embedding function
@@ -31,7 +31,7 @@ class RAGEngine():
             ],
             temperature=0
 
-    
+
         )
         return response.choices[0].message.content
 
@@ -49,7 +49,7 @@ class RAGEngine():
             include=["documents", "metadatas", "distances"]
         )
 
-       
+
         #2. Extract Context and source List
         documents = results['documents'][0]
         metadatas = results['metadatas'][0]
@@ -60,7 +60,7 @@ class RAGEngine():
         passages = []
         for doc, meta in zip(documents, metadatas):
             passages.append({"id":meta.get("source"), "text": doc, "meta": meta})
-        
+
         #Rerank
         rerank_request = RerankRequest(query=query, passages=passages)
         reranked_results = self.ranker.rerank(rerank_request)
@@ -81,7 +81,7 @@ class RAGEngine():
 
         top_passages = reliable_passages[:top_k]
 
-        
+
 
 
         #format for LLM
@@ -104,7 +104,7 @@ class RAGEngine():
             ],
             temperature=0
 
-    
+
         )
         print(f"GPT Response: {response.choices[0].message.content}")
         return RAGResponse(
@@ -129,7 +129,7 @@ class RAGEngine():
         ids = [str(uuid.uuid4()) for _ in chunks]
         metadatas = [{"source": filename} for _ in chunks]
 
-        # add tp Chrome Vector DB
+        # add to Chrome Vector DB
         self.collection.add(
             documents=chunks,
             ids=ids,

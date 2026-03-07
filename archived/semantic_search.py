@@ -27,6 +27,3 @@ print(f"Query: {query} \n Results: {results}")
 
 print(f"First Answer: {corpus[results[0][0]['corpus_id']]}")
 print(f"Second Answer: {corpus[results[0][1]['corpus_id']]}")
-
-
-

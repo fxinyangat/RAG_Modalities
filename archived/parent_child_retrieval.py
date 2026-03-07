@@ -21,11 +21,11 @@ collection = client.get_or_create_collection(
 
 # 1. THE DATA (A long section from 'The Intern CEO')
 parent_text = """
-The Intern CEO leadership framework is built on three pillars: Radical Ownership, 
-Systems Thinking, and the Growth Mindset. Radical Ownership means taking 100% 
-responsibility for outcomes, even those outside your direct control. 
-Systems Thinking involves understanding how small coding changes affect the 
-entire AI architecture. Growth Mindset is the belief that skills are built through 
+The Intern CEO leadership framework is built on three pillars: Radical Ownership,
+Systems Thinking, and the Growth Mindset. Radical Ownership means taking 100%
+responsibility for outcomes, even those outside your direct control.
+Systems Thinking involves understanding how small coding changes affect the
+entire AI architecture. Growth Mindset is the belief that skills are built through
 persistence rather than innate talent.
 """
 

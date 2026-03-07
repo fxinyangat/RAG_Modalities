@@ -24,4 +24,3 @@ ids = [f"id_{indx+1}" for indx in range(len(documents))]
 collection.add(documents=documents, ids=ids)
 
 print(f"{len(documents)} documents ingestion completed. Your API is read to retrieve")
-

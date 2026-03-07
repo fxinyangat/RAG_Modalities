@@ -3,19 +3,19 @@ from sentence_transformers import SentenceTransformer
 from chromadb.utils import embedding_functions
 
 documents = [
-    
+
         "The cat is on the mat",
         "The weather is sunny",
         "The internship CEO is a leadership fable for young professionals.",
         "Xavier Inyangat moved to the U.S. to study AI at ASU."
-    
+
 ]
 
 metadata =[{"type": "animals", "catehory": "homes"},
            {"type": "news", "category": "weather"},
            {"type": "memoirs", "category": "education"},
            {"type":"memoirs", "catehory": "people and culture"}
-           
+
            ]
 
 # initialize
@@ -31,7 +31,7 @@ myEmbeddingFunction = embedding_functions.SentenceTransformerEmbeddingFunction(m
 #     def __call__(self, input: list[str]) -> list[list[float]]:
 #         return model.encode(input).tolist()
 
-# 3. Get/Create collection 
+# 3. Get/Create collection
 collection = client.get_or_create_collection(
     name="book_project",
     embedding_function=myEmbeddingFunction
@@ -68,6 +68,3 @@ print(f"Hits: {hits}")
 print(f"\nQuery: {user_query}")
 for i,doc in enumerate(hits['documents'][0]):
     print(f"Match {i+1}: {doc} (Distance: {hits['distances'][0][i]:.4f})")
-
-
-

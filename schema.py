@@ -12,15 +12,9 @@ class QueryRequest(BaseModel):
 # sources schema
 class Source(BaseModel):
     filename: str
-    content_snippet: str #a small preview of source text 
+    content_snippet: str #a small preview of source text
 
 # Response
 class  RAGResponse(BaseModel):
     answer: str
     sources: List[Source]
-
-
-
-
-
-

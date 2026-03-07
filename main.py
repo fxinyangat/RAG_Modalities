@@ -39,25 +39,25 @@ async def process_query(request: QueryRequest):
             results = [ rag_engine.run(q, request.top_k) for q in request.query] # or use .run_with_citations()
 
             return {"results": results}
-        
-        answer = rag_engine.run(request.query, request.top_k) 
-        answer_with_citations = rag_engine.run_with_citations(request.query, request.top_k, request.filter_filename) 
+
+        answer = rag_engine.run(request.query, request.top_k)
+        answer_with_citations = rag_engine.run_with_citations(request.query, request.top_k, request.filter_filename)
 
 
         print(f"Answer with citations: {answer_with_citations}")
         return answer_with_citations
-    
-    
+
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
 @app.post('/ingest-file')
 async def ingest_file(file: UploadFile = File(...)):
     # Accept .txt and .pdf and add it to Vector DB
 
     if not (file.filename.endswith('.txt') or file.filename.endswith('.pdf')):
         raise HTTPException(status_code=400, detail="Bad file. Only .txt and .pdf files allowed")
-    
+
     try:
         # Read content
         content = await file.read()
@@ -69,45 +69,45 @@ async def ingest_file(file: UploadFile = File(...)):
                 text = "".join([page.extract_text() for page in pdf_reader.pages])
         else:
             ENCODINGS = [
-                    'utf-8',          
-                    'utf-16',        
-                    'latin-1',         
-                    'cp1252',          
-                    'utf-8-sig',     
-                    'ascii',           
+                    'utf-8',
+                    'utf-16',
+                    'latin-1',
+                    'cp1252',
+                    'utf-8-sig',
+                    'ascii',
                 ]
 
             for enc in ENCODINGS:
-                
+
                 text = content.decode(enc, errors='replace')
-        
+
         # chunk and save with engine
         num_chunkks = rag_engine.ingest_new_document(text, file.filename)
 
         print("Ingestion successfull")
 
         return {"filename": file.filename, "status": "success", "chunks_added": num_chunkks}
-    
-    
+
+
     # If none work, raise your exception
     except Exception as e:
         print(f"Error Ingesting: {e}")
         raise HTTPException(
-            status_code=500, 
+            status_code=500,
             detail="Could not decode file."
         )
 
-            
 
 
-    
+
+
         # chunk and save with engine
         num_chunkks = rag_engine.ingest_new_document(text, file.filename)
 
         print("Ingestion successfull")
 
         return {"filename": file.filename, "status": "success", "chunks_added": num_chunkks}
-    
+
     except Exception as e:
         print(f"Error Ingesting:{e}")
         raise HTTPException(status_code=500, detail=f"File Ingestion failed: {e}")
@@ -115,7 +115,3 @@ async def ingest_file(file: UploadFile = File(...)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8686)
-
-
-
-

@@ -11,11 +11,11 @@ class RecursiveChunker:
         def recursive_split(current_text, separator_index):
             if len(current_text) < self.chunk_size:
                 return [current_text]
-            
+
             # Find best sepaprator to use
             if separator_index >= len(self.separators):
                 return [current_text[:self.chunk_size]]
-            
+
 
             separator = self.separators[separator_index]
             splits = current_text.split(separator) if separator else list(current_text)
@@ -26,7 +26,7 @@ class RecursiveChunker:
             for part in splits:
                 #Add the separators back (except for last resort empty str)
                 part_with_sep = part + separator if separator else part
-                
+
                 if len(current_chunk) + len(part_with_sep) <= self.chunk_size:
                     current_chunk+= part_with_sep
 
@@ -36,7 +36,7 @@ class RecursiveChunker:
 
                     # if single part is stil too big
                     if len(part_with_sep) > self.chunk_size:
-                        chunks.extend(recursive_split(part_with_sep, separator_index + 1))    
+                        chunks.extend(recursive_split(part_with_sep, separator_index + 1))
                     else:
                         current_chunk = part_with_sep
             if current_chunk:

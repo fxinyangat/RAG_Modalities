@@ -41,5 +41,3 @@ print(f"Query: {query}\n")
 for result in results:
     text = corpus[result['corpus_id']]
     print(f"New score: {result['cross-score']:.4f} | Text {text}")
-
-

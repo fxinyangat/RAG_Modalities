@@ -5,3 +5,4 @@ venv/
 .git
 dev_vector_db
 archived/my_vecotr_db
+.vscode
