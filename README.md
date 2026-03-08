@@ -1,6 +1,6 @@
-# RAG Learning Repository
+# RAG Repository
 
-A comprehensive learning and implementation repository for **Retrieval-Augmented Generation (RAG)** systems, covering everything from foundational concepts to advanced production-ready techniques.
+A comprehensive RAG techniques implementation repository for **Retrieval-Augmented Generation (RAG)** systems, covering everything from foundational concepts to advanced production-ready techniques.
 
 ---
 
