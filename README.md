@@ -1,4 +1,4 @@
-# RAG Learning Repository 
+# RAG Learning Repository
 
 A comprehensive learning and implementation repository for **Retrieval-Augmented Generation (RAG)** systems, covering everything from foundational concepts to advanced production-ready techniques.
 
@@ -284,6 +284,6 @@ Original Author/Contributor: Xavier Inyangat
 
 ---
 
-**Last Updated:** March 2026  
-**Repository Focus:** RAG Systems & LLM Integration  
+**Last Updated:** March 2026
+**Repository Focus:** RAG Systems & LLM Integration
 **Difficulty Progression:** Beginner → Advanced
