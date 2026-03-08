@@ -32,7 +32,7 @@ Original query → LLM → Augmented queries → ChromaDB query
 ```
 
 ## Visualisation guide
-
+![alt text](image.png)
 The scatter plot shows four layers:
 
 - **Gray dots** — all document chunks in the vector DB
