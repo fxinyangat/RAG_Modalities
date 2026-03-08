@@ -3,3 +3,8 @@ __pycache__
 archived/my_vector_db/
 dev_vector_db/
 .vscode
+
+fundamentals/chroma_vector_db
+fundamentals/news_articles
+
+fundamentals-advancedRAG/data
